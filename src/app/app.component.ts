@@ -40,9 +40,8 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   private ctx!: CanvasRenderingContext2D;
   private animationId!: number;
   private keys: { [key: string]: boolean } = {};
-  private frame = 0; // Для анімації
+  private frame = 0;
 
-  // Game state
   player = { x: 50, y: 150, vy: 0, size: 16 };
   obstacles: Obstacle[] = [];
   obstacleSpeed = 3;
@@ -113,10 +112,9 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   draw() {
-    // Фон: небо + хмаринки
     this.ctx.fillStyle = '#87CEEB';
     this.ctx.fillRect(0, 0, 400, 300);
-    // Хмаринки (прості 8-біт)
+
     this.ctx.fillStyle = '#FFF';
     for (let i = 0; i < 3; i++) {
       const cloudX = (this.frame * 0.5 + i * 150) % 500 - 50;
@@ -124,7 +122,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       this.ctx.fillRect(cloudX + 10, 25 + i*20, 30, 15);
     }
 
-    // Земля
     this.ctx.fillStyle = '#228B22';
     this.ctx.fillRect(0, 284, 400, 16);
     this.ctx.fillStyle = '#006400';
@@ -132,13 +129,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       this.ctx.fillRect(i, 284, 6, 16);
     }
 
-    // Саєнко з анімацією (борода коливається!)
     this.drawSayenko(this.player.x, this.player.y);
 
-    // Пляшки
     this.obstacles.forEach(obs => this.drawBottle(obs.x, obs.y, obs.type));
 
-    // Score
     this.ctx.fillStyle = '#FFD700';
     this.ctx.shadowColor = '#FFD700';
     this.ctx.shadowBlur = 8;
@@ -149,58 +143,51 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   private drawSayenko(x: number, y: number) {
     const s = this.player.size;
-    const anim = Math.sin(this.frame * 0.2) * 1; // Легка анімація бороди
+    const anim = Math.sin(this.frame * 0.2) * 1;
 
-    // Голова
     this.ctx.fillStyle = '#FDBCB4';
     this.ctx.fillRect(x + 2, y + 2, s - 4, s - 6);
 
-    // Волосся
     this.ctx.fillStyle = '#8B4513';
     this.ctx.fillRect(x + 1, y, s - 2, 4);
     this.ctx.fillRect(x, y + 1, 3, s - 4);
     this.ctx.fillRect(x + s - 3, y + 1, 3, s - 4);
 
-    // Очі
     this.ctx.fillStyle = '#000';
     this.ctx.fillRect(x + 4, y + 5, 2, 2);
     this.ctx.fillRect(x + 10, y + 5, 2, 2);
 
-    // Ніс
     this.ctx.fillRect(x + 7, y + 8, 2, 3);
 
-    // Борода (з анімацією)
     this.ctx.fillStyle = '#654321';
     this.ctx.fillRect(x + 3, y + 11 + anim, 10, 5);
     this.ctx.fillRect(x + 1, y + 13 + anim, s - 2, 3);
 
-    // Рот
     this.ctx.fillStyle = '#A52A2A';
     this.ctx.fillRect(x + 6, y + 10, 4, 1);
   }
 
   private drawBottle(x: number, y: number, type: 'beer' | 'vodka') {
-    // Натхненний класичними спрайтами
     if (type === 'beer') {
-      this.ctx.fillStyle = '#8B4513'; // Кришка
+      this.ctx.fillStyle = '#8B4513';
       this.ctx.fillRect(x + 2, y, 16, 4);
-      this.ctx.fillStyle = '#228B22'; // Тіло
+      this.ctx.fillStyle = '#228B22';
       this.ctx.fillRect(x + 3, y + 4, 14, 24);
-      this.ctx.fillStyle = '#90EE90'; // Блиск
+      this.ctx.fillStyle = '#90EE90';
       this.ctx.fillRect(x + 5, y + 6, 3, 20);
       this.ctx.fillRect(x + 12, y + 6, 3, 20);
-      this.ctx.fillStyle = '#FFD700'; // Лейбл
+      this.ctx.fillStyle = '#FFD700';
       this.ctx.fillRect(x + 6, y + 12, 8, 8);
     } else {
-      this.ctx.fillStyle = '#000'; // Кришка горілки
+      this.ctx.fillStyle = '#000';
       this.ctx.fillRect(x + 4, y, 12, 4);
-      this.ctx.fillStyle = '#E0E0E0'; // Скло
+      this.ctx.fillStyle = '#E0E0E0';
       this.ctx.fillRect(x + 3, y + 4, 14, 24);
-      this.ctx.fillStyle = '#F0F8FF'; // Блиск
+      this.ctx.fillStyle = '#F0F8FF';
       this.ctx.fillRect(x + 14, y + 6, 2, 20);
-      this.ctx.fillStyle = '#D3D3D3'; // Тінь
+      this.ctx.fillStyle = '#D3D3D3';
       this.ctx.fillRect(x + 4, y + 6, 2, 20);
-      this.ctx.fillStyle = '#FF69B4'; // Лейбл
+      this.ctx.fillStyle = '#FF69B4';
       this.ctx.fillRect(x + 6, y + 14, 8, 6);
     }
   }

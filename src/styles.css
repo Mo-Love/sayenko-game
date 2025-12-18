@@ -1,0 +1,27 @@
+/* Базові глобальні стилі для гри Саєнко */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* Чорний фон, як у ретро-ігор */
+  font-family: 'Courier New', Courier, monospace; /* 8-біт моноспейс шрифт */
+  overflow: hidden; /* Щоб не скролилося на мобілці */
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  touch-action: manipulation; /* Для кращого тачу на телефоні */
+}
+
+/* Якщо хочеш піксельний вайб для всього тексту */
+* {
+  image-rendering: pixelated; /* Для піксель-арту, якщо додаси зображення */
+  box-sizing: border-box;
+}
+
+/* Опціонально: крутий градієнт фон для body (замість чорного) */
+body {
+  background: linear-gradient(to bottom, #000428, #004e92); /* Нічне небо вайб */
+}

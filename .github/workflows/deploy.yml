@@ -1,15 +1,35 @@
 name: Deploy to GitHub Pages
-on: [push]
+
+on:
+  push:
+    branches: [ main ]  # При пуші в main автоматично запуститься
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - run: npm ci
-      - run: ng build --base-href /${{ github.repository }}/
-      - uses: peaceiris/actions-gh-pages@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build -- --base-href /sayenko-game/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist/твоя_назва_проєкту/browser
+          publish_dir: dist/sayenko-game/browser  # Якщо назва проєкту інша — перевір angular.json і заміни "sayenko-game"
